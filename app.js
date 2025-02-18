@@ -4,6 +4,8 @@ const CatController = require('./controllers/Cat.controller');
 const app = express();
 
 app.get('/cats', CatController.getAll);
+app.get('/cats/:catId', CatController.getOne);
+app.delete('/cats/:catId', CatController.deleteOne);
 
 module.exports = app;
 
@@ -18,7 +20,7 @@ module.exports = app;
 GET http://localhost:5000/users/ HTTP/1.1
 
 CREATE - post
-READ - get
+READ - +getAll, getOne
 UPDATE - put
 DELETE - delete
 */

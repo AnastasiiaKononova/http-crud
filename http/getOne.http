@@ -1,0 +1,1 @@
+GET http://localhost:5000/cats/1 HTTP/1.1
