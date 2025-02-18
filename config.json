@@ -1,0 +1,11 @@
+{
+    "development": {
+        "user": "postgres",
+        "password": "Anastasiia07111607",
+        "host": "localhost",
+        "database": "crud_cat",
+        "port": 5432
+    },
+    "test": {},
+    "production": {}
+}
