@@ -17,3 +17,5 @@ VALUES (
     7,
     'Tuna'
   );
+
+  SELECT * FROM cats;

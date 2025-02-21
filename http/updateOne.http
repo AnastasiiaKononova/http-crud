@@ -1,0 +1,7 @@
+PUT http://localhost:5000/cats/3 HTTP/1.1
+Content-Type: application/json
+
+{
+    "breed": "Bengal",
+    "color": "Yellow"
+}

@@ -2,12 +2,40 @@ class Cat {
   static _tableName = "cats";
   static _client = null;
 
-  static async create(bodyObj) {
-    const {name, breed, color, age, weight, favorite} = bodyObj;
-    const insertString = `INSERT INTO ${this._tableName} (name, breed, color, age, weight, favorite) VALUES ('${name}', '${breed}', '${color}', ${age}, ${weight}, '${favorite}') RETURNING *;`
-    const {rows} = await this._client.query(insertString);
-    return rows;
+  static _attributes = {
+    name: 'string',
+    breed: 'string',
+    color: 'string',
+    age: 'number',
+    weight: 'number',
+    favorite: 'string'
 }
+
+  static async create(insertValues) {
+    // const {name, breed, color, age, weight, favorite} = bodyObj;
+    // const insertString = `INSERT INTO ${this._tableName} (name, breed, color, age, weight, favorite) VALUES ('${name}', '${breed}', '${color}', ${age}, ${weight}, '${favorite}') RETURNING *;`
+    // const {rows} = await this._client.query(insertString);
+    // return rows;
+
+    const insertAttr = Object.entries(this._attributes)
+      .filter(([attr, domain]) => attr in insertValues)
+      .map(([attr]) => attr);
+
+    const insertSchemaAtr = insertAttr.map((attr) => `"${attr}"`).join(",");
+
+    const insertValueStr = insertAttr
+      .map((attr) => {
+        const value = insertValues[attr];
+        return typeof value === "string" ? `'${value}'` : value;
+      })
+      .join(",");
+
+    const str = `INSERT INTO ${this._tableName} (${insertSchemaAtr}) VALUES (${insertValueStr}) RETURNING *;`;
+
+    const { rows } = await this._client.query(str);
+
+    return rows;
+  }
 
   static async findAll() {
     const { rows } = await this._client.query(
@@ -26,7 +54,7 @@ class Cat {
     }
   }
 
-  static async updateByPk() {
+  static async updateByPk({ id, updateValues }) {
     /*
     UPDATE cats
     SET name = 'Barsik', breed = 'British'
@@ -39,8 +67,23 @@ class Cat {
     2. Ми можемо автоматично перевіряти вхідні дані на відповідність тому, що ми очікуємо
     3. Динамічно створити рядок запиту з тою інформацією, яка у нас є 
     */
-}
 
+    const insertAttr = Object.entries(this._attributes)
+      .filter(([attr, domain]) => attr in updateValues)
+      .map(([attr]) => attr);
+
+    const insertValueStr = insertAttr
+      .map((attr) => {
+        const value = updateValues[attr];
+        return `${attr} = ${typeof value === "string" ? `'${value}'` : value}`;
+      })
+      .join(",");
+
+    const str = `UPDATE ${this._tableName} SET ${insertValueStr} WHERE id = ${id} RETURNING *;`;
+
+    const { rows } = await this._client.query(str);
+    return rows;
+  }
 
   static async deleteByPk(id) {
     const { rows } = await this._client.query(
