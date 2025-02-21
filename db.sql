@@ -19,3 +19,15 @@ VALUES (
   );
 
   SELECT * FROM cats;
+
+  CREATE TABLE owners (
+    id serial PRIMARY KEY,
+    first_name varchar(300) NOT NULL CHECK (first_name != ''),
+    last_name varchar(300) NOT NULL CHECK (last_name != ''),
+    address text,
+    phone varchar(14) NOT NULL
+  );
+
+  ALTER TABLE cats 
+  ADD COLUMN owner_id int REFERENCES owners(id);
+

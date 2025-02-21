@@ -8,7 +8,8 @@ class Cat {
     color: 'string',
     age: 'number',
     weight: 'number',
-    favorite: 'string'
+    favorite: 'string',
+    owner_id: 'number'
 }
 
   static async create(insertValues) {
