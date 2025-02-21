@@ -1,0 +1,9 @@
+POST http://localhost:5000/owners HTTP/1.1
+Content-Type: application/json
+
+{
+    "first_name": "Jame",
+    "last_name": "Low",
+    "address": "Baker-street",
+    "phone": "+3809754310865"
+}
