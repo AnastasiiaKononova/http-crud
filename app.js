@@ -7,6 +7,9 @@ const ownerRouter = require('./routes/OwnerRouter');
 
 app.use(bodyParser);
 
+app.use('/cats', catRouter);
+app.use('/owners', ownerRouter);
+
 // error handling
 
 module.exports = app;
